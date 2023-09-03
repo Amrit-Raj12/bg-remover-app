@@ -1,3 +1,6 @@
+![image](https://github.com/Amrit-Raj12/bg-remover-app/assets/67092088/92d9b899-ee5e-44af-81f5-a7101f31ff71)
+
+
 # Background Be Gone
 
 ## Introduction
