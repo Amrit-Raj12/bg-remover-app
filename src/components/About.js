@@ -28,7 +28,7 @@ const About = ({
             variants={fadeIn('down', 0.5)}
             initial='hidden'
             whileInView='show'
-            className='hidden lg:flex flex-1 max-w-[320px] lg:max-w-[482px] flex items-center justify-center'
+            className='block lg:flex flex-1 max-w-[320px] lg:max-w-[482px] flex items-center justify-center'
           >
             {(!resultImage && previewImage) && (
               <img className={`${loading && 'opacity-25'}`} src={previewImage} alt='' width={500} height={500} />
