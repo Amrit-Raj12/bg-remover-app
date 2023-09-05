@@ -16,7 +16,7 @@ const About = ({
   backgoundImage,
   handleCancel
 }) => {
-  const [ref, inView] = useInView({
+  const [ref] = useInView({
     threshold: 0.5,
   });
 

@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import Cookies from 'js-cookie';
 import { useAuth } from '../AuthContext';
+import { toast } from 'react-toastify';
+import { BsFillEyeFill, BsFillEyeSlashFill } from 'react-icons/bs';
 
 const RegisterModal = ({ closeModal, setIsModalOpen }) => {
     const { setAuthToken, setUserName } = useAuth();
@@ -11,12 +13,13 @@ const RegisterModal = ({ closeModal, setIsModalOpen }) => {
         password: '',
     });
     const [isLoading, setIsLoading] = useState(false);
+    const [showPassword, setShowPassword] = useState(false);
 
     const handleSubmit = async (e) => {
         setIsLoading(true);
         e.preventDefault();
         try {
-            const response = await fetch('hhttps://zany-gold-sheep-robe.cyclic.app/users', {
+            const response = await fetch('https://zany-gold-sheep-robe.cyclic.app/users', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -41,8 +44,13 @@ const RegisterModal = ({ closeModal, setIsModalOpen }) => {
                 console.log('User registered successfully');
                 closeModal();
                 // You can redirect to a success page or perform other actions
+            } else if (response?.status === 404) {
+                setIsLoading(false);
+                toast.error('Entered email is already registered!', {
+                    position: 'top-center',
+                });
             } else {
-                console.error('Failed to register user');
+                console.error('Failed to register user', response);
                 setIsLoading(false);
             }
         } catch (error) {
@@ -58,6 +66,10 @@ const RegisterModal = ({ closeModal, setIsModalOpen }) => {
             ...prevUser,
             [name]: value,
         }));
+    };
+
+    const togglePasswordVisibility = () => {
+        setShowPassword(!showPassword);
     };
 
     return (
@@ -127,17 +139,30 @@ const RegisterModal = ({ closeModal, setIsModalOpen }) => {
                         <label htmlFor="password" className="block mb-2">
                             Password
                         </label>
-                        <input
-                            type="text"
-                            id="password"
-                            name="password"
-                            onChange={handleChange}
-                            className="w-full px-3 py-2 border rounded text-gradient focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500
+                        <div className="relative">
+                            <input
+                                type={showPassword ? 'text' : 'password'}
+                                id="password"
+                                name="password"
+                                onChange={handleChange}
+                                className="w-full px-3 py-2 border rounded text-gradient focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500
                             disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none
                             invalid:border-pink-500 invalid:text-pink-600
                             focus:invalid:border-pink-500 focus:invalid:ring-pink-500"
-                            required
-                        />
+                                required
+                            />
+                            <button
+                                type="button"
+                                onClick={togglePasswordVisibility}
+                                className="absolute top-1/2 transform -translate-y-1/2 right-2 focus:outline-none"
+                            >
+                                {showPassword ? (
+                                    <BsFillEyeFill />
+                                ) : (
+                                    <BsFillEyeSlashFill />
+                                )}
+                            </button>
+                        </div>
                     </div>
                     <div className='flex justify-between items-center'>
 

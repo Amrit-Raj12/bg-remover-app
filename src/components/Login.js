@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import Cookies from 'js-cookie';
 import { useAuth } from '../AuthContext';
+import { BsFillEyeFill, BsFillEyeSlashFill } from 'react-icons/bs';
+import { toast } from 'react-toastify';
 
 const LoginModal = ({ closeModal, setIsRegisterModalOpen, closeRegisterModal }) => {
     const { setAuthToken, setUserName } = useAuth();
@@ -10,6 +12,7 @@ const LoginModal = ({ closeModal, setIsRegisterModalOpen, closeRegisterModal }) 
         password: '',
     });
     const [isLoading, setIsLoading] = useState(false);
+    const [showPassword, setShowPassword] = useState(false);
     const handleLogin = async (e) => {
         setIsLoading(true);
         e.preventDefault();
@@ -41,6 +44,9 @@ const LoginModal = ({ closeModal, setIsRegisterModalOpen, closeRegisterModal }) 
                 closeModal();
                 // You can redirect to a success page or perform other actions
             } else {
+                toast.error('Email/password wrong', {
+                    position: 'top-center',
+                });
                 console.error('Failed to register user');
                 setIsLoading(false);
             }
@@ -56,6 +62,10 @@ const LoginModal = ({ closeModal, setIsRegisterModalOpen, closeRegisterModal }) 
             ...prevUser,
             [name]: value,
         }));
+    };
+
+    const togglePasswordVisibility = () => {
+        setShowPassword(!showPassword);
     };
 
     return (
@@ -108,17 +118,31 @@ const LoginModal = ({ closeModal, setIsRegisterModalOpen, closeRegisterModal }) 
                         <label htmlFor="password" className="block mb-2">
                             Password
                         </label>
-                        <input
-                            type="text"
-                            id="password"
-                            name="password"
-                            onChange={handleChange}
-                            className="w-full px-3 py-2 border rounded text-gradient focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500
+                        <div className="relative">
+                            <input
+                                type="text"
+                                id="password"
+                                name="password"
+                                onChange={handleChange}
+                                className="w-full px-3 py-2 border rounded text-gradient focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500
                             disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none
                             invalid:border-pink-500 invalid:text-pink-600
                             focus:invalid:border-pink-500 focus:invalid:ring-pink-500"
-                            required
-                        />
+                                required
+                            />
+                            <button
+                                type="button"
+                                onClick={togglePasswordVisibility}
+                                className="absolute top-1/2 transform -translate-y-1/2 right-2 focus:outline-none"
+                            >
+                                {showPassword ? (
+                                    <BsFillEyeFill />
+                                ) : (
+                                    <BsFillEyeSlashFill />
+                                )}
+                            </button>
+                        </div>
+
                     </div>
                     <div className='flex justify-between items-center'>
 
