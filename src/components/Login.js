@@ -120,7 +120,7 @@ const LoginModal = ({ closeModal, setIsRegisterModalOpen, closeRegisterModal }) 
                         </label>
                         <div className="relative">
                             <input
-                                type="text"
+                                type={showPassword ? 'text' : 'password'}
                                 id="password"
                                 name="password"
                                 onChange={handleChange}
